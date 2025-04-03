@@ -23,7 +23,8 @@ export default class ItemPage extends BasePage{
         }
     }
 
-    async clickAddToCart(){
+    async clickAddToCart(): Promise<ItemPage>{
         await this.page.locator(this.ADD_TO_CART).click()
+        return this
     }
 }

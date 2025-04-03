@@ -17,8 +17,9 @@ export default class CartPage extends BasePage{
         return this
     }
 
-    async removeItem(itemName: string){
+    async removeItem(itemName: string): Promise<CartPage>{
         await this.page.locator(this.CART_ITEM, {hasText: itemName}).locator(this.REMOVE).click()
+        return this
     }
 
     async getProductsInCart(): Promise<Product[]>{

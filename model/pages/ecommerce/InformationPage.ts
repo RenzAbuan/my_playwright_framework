@@ -14,16 +14,19 @@ export default class InformationPage extends BasePage{
         return this
     }
 
-    async setFirstName(firstName: string){
+    async setFirstName(firstName: string): Promise<InformationPage>{
         await this.page.locator(this.FIRST_NAME).fill(firstName)
+        return this
     }
 
-    async setLastName(lastName: string){
+    async setLastName(lastName: string): Promise<InformationPage>{
         await this.page.locator(this.LAST_NAME).fill(lastName)
+        return this
     }
 
-    async setZipCode(zipCode: string){
+    async setZipCode(zipCode: string): Promise<InformationPage>{
         await this.page.locator(this.ZIP_CODE).fill(zipCode)
+        return this
     }
 
     async getErrorMessage(): Promise<string>{
