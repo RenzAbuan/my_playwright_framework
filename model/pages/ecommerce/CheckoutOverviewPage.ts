@@ -1,5 +1,6 @@
-import BasePage from "../../../support/pages/BasePage";
+import BasePage from "./BasePage";
 import CheckoutCompletePage from "./CheckoutCompletePage";
+import HomePage from "./HomePage";
 
 export default class CheckoutOverviewPage extends BasePage{
 
@@ -8,6 +9,7 @@ export default class CheckoutOverviewPage extends BasePage{
     private readonly ITEM_TOTAL = '.summary_total_label'
     private readonly ITEM_PRICE= '.inventory_item_price'
     private readonly TAX_AMOUNT= '.summary_tax_label'
+    private readonly CANCEL = '#cancel'
     private readonly FINISH = '#finish'
 
     async init(): Promise<this> {
@@ -19,7 +21,7 @@ export default class CheckoutOverviewPage extends BasePage{
         const itemPrices = await this.page.locator(this.ITEM_PRICE).all()
 
         for(const itemPrice of itemPrices){
-            const price = parseFloat((await itemPrice.textContent() as string).replace('$', '').trim())
+            const price = parseFloat((await itemPrice.innerText()).replace('$', '').trim())
             sum+=price
         }
 
@@ -31,19 +33,24 @@ export default class CheckoutOverviewPage extends BasePage{
     }
 
     async getItemPriceTotal(): Promise<number>{
-        return parseFloat((await this.page.locator(this.ITEM_TOTAL).textContent() as string).replace('Item total: $', '').trim())
+        return parseFloat((await this.page.locator(this.ITEM_TOTAL).innerText()).replace('Item total: $', '').trim())
     }
 
     async getItemSubTotal(): Promise<number>{
-        return parseFloat((await this.page.locator(this.ITEM_SUBTOTAL).textContent() as string).replace('Item total: $', '').trim())
+        return parseFloat((await this.page.locator(this.ITEM_SUBTOTAL).innerText()).replace('Item total: $', '').trim())
     }
 
     async getTax(): Promise<number>{
-        return parseFloat((await this.page.locator(this.TAX_AMOUNT).textContent() as string).replace('$', '').trim())
+        return parseFloat((await this.page.locator(this.TAX_AMOUNT).innerText()).replace('$', '').trim())
+    }
+
+    async clickCancel(): Promise<HomePage>{
+        await this.page.locator(this.CANCEL).click()
+        return await new HomePage(this.page).init()
     }
 
     async clickFinish(): Promise<CheckoutCompletePage>{
         await this.page.locator(this.FINISH).click()
-        return new CheckoutCompletePage(this.page).init()
+        return await new CheckoutCompletePage(this.page).init()
     }
 }

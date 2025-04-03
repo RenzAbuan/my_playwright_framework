@@ -1,4 +1,4 @@
-import BasePage from "../../../support/pages/BasePage";
+import BasePage from "./BasePage";
 import { Product } from "../../data/ecommerce/Products";
 import InformationPage from "./InformationPage";
 
@@ -41,7 +41,7 @@ export default class CartPage extends BasePage{
     }
 
     async getItemPrice( itemName: string): Promise<string>{
-        return await this.page.locator(this.CART_ITEM, {hasText: itemName}).locator(this.ITEM_PRICE).textContent() as string
+        return await this.page.locator(this.CART_ITEM, {hasText: itemName}).locator(this.ITEM_PRICE).innerText()
     }
 
     async clickCheckout(): Promise<InformationPage>{

@@ -1,8 +1,9 @@
 import { Locator } from "playwright-core";
-import BasePage from "../../../support/pages/BasePage";
+import BasePage from "./BasePage";
 import { Product } from "../../data/ecommerce/Products";
 import { SortCategory } from "../../enums/ecommerce/SortCategory";
 import CartPage from "./CartPage";
+import ItemPage from "./ItemPage";
 
 export default class HomePage extends BasePage{
 
@@ -15,7 +16,6 @@ export default class HomePage extends BasePage{
     
     private readonly ADD_TO_CART = '//button[text()="Add to cart"]'
     private readonly REMOVE_FROM_CART = 'Remove'
-    private readonly SHOPPING_CART = '.shopping_cart_link'
     private readonly SORT_PRODUCTS = '.product_sort_container'
 
     async init(){
@@ -27,7 +27,7 @@ export default class HomePage extends BasePage{
     }
 
     async getItemPrice(itemName: string): Promise<string>{
-        return await this.page.locator(this.ITEM_CONTAINER, {hasText: itemName}).locator(this.ITEM_PRICE).textContent() as string
+        return await this.page.locator(this.ITEM_CONTAINER, {hasText: itemName}).locator(this.ITEM_PRICE).innerText()
     }
 
     async getItemDescription(itemName: string): Promise<string>{
@@ -44,6 +44,14 @@ export default class HomePage extends BasePage{
         return products.map((product)=> parseFloat(product.price.replace('$', '').trim()))
     }
 
+    async getProduct(itemName: string): Promise<Product>{
+        return {
+            name: itemName,
+            description: await this.getItemDescription(itemName),
+            price: await this.getItemPrice(itemName)
+        }
+    }
+
     async getAllProducts(): Promise<Product[]>{
         const itemElements = await this.page.locator(this.ITEM_CONTAINER).all()
         return await this.extractToProducts(itemElements)
@@ -58,9 +66,9 @@ export default class HomePage extends BasePage{
         await this.page.locator(this.ITEM_CONTAINER, {hasText: itemName}).locator(this.ADD_TO_CART).click()
     }
 
-    async clickShoppingCart(): Promise<CartPage>{
-        await this.page.locator(this.SHOPPING_CART).click()
-        return new CartPage(this.page).init()
+    async clickItem(itemName: string): Promise<ItemPage>{
+        await this.page.locator(this.ITEM_NAME, {hasText: itemName}).click()
+        return new ItemPage(this.page).init()
     }
 
     async selectSortCategory(sortCategory: SortCategory){

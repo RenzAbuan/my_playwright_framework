@@ -1,7 +1,7 @@
-import BasePage from "../../../support/pages/BasePage";
-import HomePage from "./HomePage";
+import BasePage from "./BasePage"
+import HomePage from "./HomePage"
 
-export default class CheckoutCompletePage extends BasePage{
+export default class CheckoutCompletePage extends BasePage {
 
     /* Locators */
     private readonly COMPLETE_HEADER = '.complete-header'
@@ -22,6 +22,6 @@ export default class CheckoutCompletePage extends BasePage{
 
     async clickBackHome(): Promise<HomePage>{
         await this.page.locator(this.BACK_HOME).click()
-        return new HomePage(this.page).init()
+        return await new HomePage(this.page).init()
     }
 }
