@@ -1,4 +1,5 @@
-import BasePage from "../../support/pages/BasePage";
+import BasePage from "../../../support/pages/BasePage";
+import HomePage from "./HomePage";
 
 export default class LoginPage extends BasePage{
     /*Locators*/
@@ -18,7 +19,8 @@ export default class LoginPage extends BasePage{
         await this.page.locator(this.PASSWORD).fill(password)
     }
 
-    async clickLogin(){
+    async clickLogin(): Promise<HomePage>{
         await this.page.locator(this.LOGIN).click()
+        return new HomePage(this.page).init()
     }
 }
