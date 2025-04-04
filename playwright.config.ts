@@ -22,7 +22,6 @@ const ENVIRONMENT_PROFILES: Record<
   }
 }
 
-setMandatoryEnvironmentVariables()
 const { PLAYWRIGHT_BASE_URL, PLAYWRIGHT_BROWSER, PLAYWRIGHT_HEADLESS, TEST_ENVIRONMENT } = readEnvironmentVariables()
 
 /**
@@ -52,15 +51,6 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 });
-
-function setMandatoryEnvironmentVariables() {
-if (process.env.PLAYWRIGHT_BROWSER === undefined || process.env.PLAYWRIGHT_BROWSER.length===0) {
-      console.log('PLAYWRIGHT_BROWSER not set. Default is set to "chromium"');
-  }
-  if (process.env.PLAYWRIGHT_HEADLESS === undefined || process.env.PLAYWRIGHT_HEADLESS.length===0) {
-      console.log('PLAYWRIGHT_HEADLESS not set. Default is set to "headless');
-  }
-}
 
 function readEnvironmentVariables() {
 
