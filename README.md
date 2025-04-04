@@ -23,10 +23,12 @@ USER_PASSWORD=***
 1. Make sure you have node.js installed. Please refer to https://nodejs.org/en/download
 
 2. In terminal, install playwright packages `npm install @playwright/test@latest`
+   
+3. In termina, install playwright browsers using `npx playwright install`
 
-3. run `npm ci` to install the dependencies
+4. In termina, run `npm ci` to install the dependencies
 
-4. run `npx playwright test` for test execution
+5. In terminal, run `npx playwright test` for test execution
 
 **DON'T ADD .env TO A GIT REPO.**
 
