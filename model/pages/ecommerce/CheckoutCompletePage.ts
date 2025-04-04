@@ -9,6 +9,7 @@ export default class CheckoutCompletePage extends BasePage {
     private readonly BACK_HOME= '#back-to-products'
 
     async init(): Promise<this> {
+        await this.page.waitForLoadState(this.LOAD_STATE)
         return this
     }
 

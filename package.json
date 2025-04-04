@@ -11,6 +11,7 @@
     "@playwright/test": "^1.51.1",
     "@types/node": "^22.13.17",
     "get-port": "^7.1.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "dotenv": "^16.4.7"
   }
 }

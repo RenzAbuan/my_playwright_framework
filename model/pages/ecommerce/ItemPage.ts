@@ -1,6 +1,5 @@
 import BasePage from "./BasePage";
 import { Product } from "../../data/ecommerce/Products";
-import CartPage from "./CartPage";
 
 export default class ItemPage extends BasePage{
 
@@ -12,6 +11,7 @@ export default class ItemPage extends BasePage{
     private readonly ADD_TO_CART = '#add-to-cart'
 
     async init(): Promise<this> {
+        await this.page.waitForLoadState(this.LOAD_STATE)
         return this
     }
 

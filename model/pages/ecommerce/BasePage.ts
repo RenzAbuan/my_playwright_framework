@@ -9,6 +9,8 @@ export default abstract class BasePage {
 
     abstract init(): Promise<this>
 
+    protected readonly LOAD_STATE = 'domcontentloaded'
+
     /* Locators */
     private readonly MENU = '#react-burger-menu-btn'
     private readonly ALL_ITEMS_MENU = '#inventory_sidebar_link'

@@ -1,13 +1,29 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test'
+import dotenv from 'dotenv'
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config()
+
+// Environment profiles
+const ENVIRONMENT_PROFILES: Record<
+  string,
+  {
+    baseURL: string
+  }
+> = {
+  qa: {
+    baseURL: 'https://www.saucedemo.com/'
+  },
+  staging: {
+    baseURL: ''
+  },
+  prod: {
+    baseURL: ''
+  }
+}
+
+setMandatoryEnvironmentVariables()
+const { PLAYWRIGHT_BASE_URL, PLAYWRIGHT_BROWSER, PLAYWRIGHT_HEADLESS, TEST_ENVIRONMENT } = readEnvironmentVariables()
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -24,61 +40,40 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  timeout: 60000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://www.saucedemo.com/',
-
+    baseURL: PLAYWRIGHT_BASE_URL,
+    browserName: PLAYWRIGHT_BROWSER,
+    headless: PLAYWRIGHT_HEADLESS,
+    screenshot: 'only-on-failure',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-
-  /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: { 
-        ...devices['Desktop Chrome'],
-        headless: false
-       },
-    },
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
-  ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
 
+function setMandatoryEnvironmentVariables() {
+if (process.env.PLAYWRIGHT_BROWSER === undefined || process.env.PLAYWRIGHT_BROWSER.length===0) {
+      console.log('PLAYWRIGHT_BROWSER not set. Default is set to "chromium"');
+  }
+  if (process.env.PLAYWRIGHT_HEADLESS === undefined || process.env.PLAYWRIGHT_HEADLESS.length===0) {
+      console.log('PLAYWRIGHT_HEADLESS not set. Default is set to "headless');
+  }
+}
+
+function readEnvironmentVariables() {
+
+  const PLAYWRIGHT_BROWSER: 'chromium'|'firefox'|'webkit' = process.env.PLAYWRIGHT_BROWSER
+    ? process.env.PLAYWRIGHT_BROWSER as 'chromium'|'firefox'|'webkit' 
+    : 'chromium';
+  const PLAYWRIGHT_HEADLESS = process.env.PLAYWRIGHT_HEADLESS
+    ? process.env.PLAYWRIGHT_HEADLESS!=='false'
+    : true;
+  const TEST_ENVIRONMENT: 'qa' | 'staging' | 'prod' = process.env.TEST_ENVIRONMENT
+    ? process.env.TEST_ENVIRONMENT as 'qa' | 'staging' | 'prod'
+    : 'qa'
+  const PLAYWRIGHT_BASE_URL = ENVIRONMENT_PROFILES[TEST_ENVIRONMENT].baseURL
+  
+  return {PLAYWRIGHT_BASE_URL, PLAYWRIGHT_BROWSER, PLAYWRIGHT_HEADLESS, TEST_ENVIRONMENT}
+}

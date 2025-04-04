@@ -14,6 +14,7 @@ export default class CartPage extends BasePage{
     private readonly CHECKOUT = '#checkout'
 
     async init(): Promise<this> {
+        await this.page.waitForLoadState(this.LOAD_STATE)
         return this
     }
 

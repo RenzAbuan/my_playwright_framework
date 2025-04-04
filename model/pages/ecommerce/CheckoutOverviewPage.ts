@@ -13,6 +13,7 @@ export default class CheckoutOverviewPage extends BasePage{
     private readonly FINISH = '#finish'
 
     async init(): Promise<this> {
+        await this.page.waitForLoadState(this.LOAD_STATE)
         return this
     }
 

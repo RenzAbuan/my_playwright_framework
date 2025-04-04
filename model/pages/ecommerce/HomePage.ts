@@ -19,6 +19,7 @@ export default class HomePage extends BasePage{
     private readonly SORT_PRODUCTS = '.product_sort_container'
 
     async init(){
+        await this.page.waitForLoadState(this.LOAD_STATE)
         return this
     }
 

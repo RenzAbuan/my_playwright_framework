@@ -10,6 +10,8 @@ export default class LoginPage extends BasePage{
     private readonly ERROR = '[data-test="error"]'
 
     async init(): Promise<this> {
+        await this.page.waitForLoadState(this.LOAD_STATE)
+        await this.isLoginFormVisible()
         return this
     }
 

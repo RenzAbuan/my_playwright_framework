@@ -6,8 +6,6 @@ import { Customer } from '../../model/data/ecommerce/Customer'
 import CartPage from '../../model/pages/ecommerce/CartPage'
 import { expect, test } from 'BaseTest'
 
-//TODO COMMENTS, STRING CHECK BEFORE FILL, DATA PROVIDERS
-
 test('Successful Login & Logout', async ({ open }) => {
   
   const homePage = await open(LoginPage)

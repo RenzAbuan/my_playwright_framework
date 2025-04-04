@@ -11,6 +11,7 @@ export default class InformationPage extends BasePage{
     private readonly CONTINUE = '#continue'
 
     async init(): Promise<this> {
+        await this.page.waitForLoadState(this.LOAD_STATE)
         return this
     }
 
