@@ -21,8 +21,8 @@ USER_PASSWORD=***
 - **USER_PASSWORD** : Default password for username
 
 1. Make sure you have node.js installed. Please refer to https://nodejs.org/en/download
-   
-2. install playwright browsers with `npx playwright install`
+
+2. In terminal, install playwright packages `npm install @playwright/test@latest`
 
 3. run `npm ci` to install the dependencies
 
