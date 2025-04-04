@@ -37,4 +37,11 @@ export default class LoginPage extends BasePage{
     async isLoginFormVisible(): Promise<boolean>{
         return await this.page.locator(this.LOGIN_FORM).isVisible()
     }
+
+    // Grouped steps
+    async loginUser(username?: string, password?: string): Promise<HomePage>{
+        return await this.setUsername(username ? username : process.env.STANDARD_USERNAME as string)
+            .then(_ => _.setPassword(password ? password : process.env.USER_PASSWORD as string))
+            .then(_ => this.clickLogin())
+    }
 }

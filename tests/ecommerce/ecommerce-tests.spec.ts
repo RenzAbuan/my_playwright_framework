@@ -9,9 +9,7 @@ import { expect, test } from 'BaseTest'
 test('Successful Login & Logout', async ({ open }) => {
   
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   // Validate if logged in
   expect(await homePage.getPageTitle()).toBe('Products')
@@ -27,9 +25,7 @@ test('Successful Login & Logout', async ({ open }) => {
 test('Invalid credentials should not login and show error message', async ({ open }) => {
   const loginPage = await open(LoginPage)
 
-  await loginPage.setUsername('standard_user')
-    .then(_ => _.setPassword('secret_sauce1'))
-    .then(_ => _.clickLogin())
+  await loginPage.loginUser(process.env.STANDARD_USERNAME as string, "invalidpassword")
 
   // Verify that user is not able to login
   expect(await loginPage.getErrorMessage()).toContain('Username and password do not match any user in this service')
@@ -38,9 +34,7 @@ test('Invalid credentials should not login and show error message', async ({ ope
 test('Items are successfully sorted', async ({ open }) => {
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   await homePage.selectSortCategory(SortCategory.Name_Ascending)
   expect(await homePage.isSortedFromZtoA(await homePage.getItemNames())).toBe(true)
@@ -60,9 +54,7 @@ test('Items can be added to cart upon viewing/selecting', async ({ open }) => {
   const itemName = 'Sauce Labs Bolt T-Shirt'
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
   
   const product = await homePage.getProduct(itemName)
   const itemPage = await homePage.clickItem(itemName)
@@ -84,9 +76,7 @@ test('Items added are successfully removed from Cart', async ({ open }) => {
   const items: string[] = ['Sauce Labs Bolt T-Shirt', 'Sauce Labs Bike Light']
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   for(const item of items)
     await homePage.clickAddToCart(item)
@@ -107,9 +97,7 @@ test('Item/s has been added to Cart with correct names, descriptions & prices', 
   const items: string[] = ['Sauce Labs Bolt T-Shirt', 'Sauce Labs Bike Light']
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   for(const item of items)
     await homePage.clickAddToCart(item)
@@ -135,9 +123,7 @@ test('Item price total in checkout page is correct', async ({ open }) => {
   }
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   for(const item of items)
     await homePage.clickAddToCart(item)
@@ -146,9 +132,7 @@ test('Item price total in checkout page is correct', async ({ open }) => {
 
   const checkoutOverviewPage = await open(CartPage)
     .then(_ => _.clickCheckout())
-    .then(_ => _.setFirstName(user.firstName))
-    .then(_ => _.setLastName(user.lastName))
-    .then(_ => _.setZipCode(user.zipCode))
+    .then(_ => _.setCustomerDetails(user))
     .then(_ => _.clickContinue())
 
   // Verify pricing
@@ -165,9 +149,7 @@ test('Customer Information fields should be mandatory', async ({ open }) => {
   }
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   for(const item of items)
     await homePage.clickAddToCart(item)
@@ -202,9 +184,7 @@ test('User should be able to cancel checkout but the items should still be selec
   }
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   for(const item of items)
     await homePage.clickAddToCart(item)
@@ -217,9 +197,7 @@ test('User should be able to cancel checkout but the items should still be selec
 
   const pageTitle = await open(CartPage)
     .then(_ => _.clickCheckout())
-    .then(_ => _.setFirstName(user.firstName))
-    .then(_ => _.setLastName(user.lastName))
-    .then(_ => _.setZipCode(user.zipCode))
+    .then(_ => _.setCustomerDetails(user))
     .then(_ => _.clickContinue())
     .then(_ => _.clickCancel())
     .then(_ => _.getPageTitle())
@@ -240,9 +218,7 @@ test('Item/s checkout is successful', async ({ open }) => {
   }
 
   const homePage = await open(LoginPage)
-    .then(_ => _.setUsername('standard_user'))
-    .then(_ => _.setPassword('secret_sauce'))
-    .then(_ => _.clickLogin())
+    .then(_ => _.loginUser())
 
   for(const item of items)
     await homePage.clickAddToCart(item)
@@ -251,9 +227,7 @@ test('Item/s checkout is successful', async ({ open }) => {
 
   const checkoutCompletePage = await open(CartPage)
   .then(_ => _.clickCheckout())
-  .then(_ => _.setFirstName(user.firstName))
-  .then(_ => _.setLastName(user.lastName))
-  .then(_ => _.setZipCode(user.zipCode))
+  .then(_ => _.setCustomerDetails(user))
   .then(_ => _.clickContinue())
   .then(_ => _.clickFinish())
 

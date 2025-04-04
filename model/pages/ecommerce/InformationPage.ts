@@ -1,3 +1,4 @@
+import { Customer } from "../../data/ecommerce/Customer";
 import BasePage from "./BasePage";
 import CheckoutOverviewPage from "./CheckoutOverviewPage";
 
@@ -37,5 +38,12 @@ export default class InformationPage extends BasePage{
     async clickContinue(): Promise<CheckoutOverviewPage>{
         await this.page.locator(this.CONTINUE).click()
         return await new CheckoutOverviewPage(this.page).init()
+    }
+
+    // Grouped steps
+    async setCustomerDetails(user: Customer): Promise<InformationPage>{
+        return await this.setFirstName(user.firstName)
+            .then(_ => _.setLastName(user.lastName))
+            .then(_ => _.setZipCode(user.zipCode))
     }
 }
