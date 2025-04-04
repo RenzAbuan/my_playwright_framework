@@ -1,3 +1,6 @@
+## Simple Playwright Framework using Typescript -> Page-Object model 
+## Target site: https://www.saucedemo.com/
+
 ## Setup
 
 After cloning the project ('master' branch):
