@@ -1,6 +1,6 @@
 ## Setup
 
-After cloning the project:
+After cloning the project ('master' branch):
 
 Create a .env file at the root of the project with the ff contents:
 
