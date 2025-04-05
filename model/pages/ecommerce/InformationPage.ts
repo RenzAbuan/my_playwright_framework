@@ -1,6 +1,6 @@
+import { CheckoutOverviewPage } from "@pages";
 import { Customer } from "../../data/ecommerce/Customer";
 import BasePage from "./BasePage";
-import CheckoutOverviewPage from "./CheckoutOverviewPage";
 
 export default class InformationPage extends BasePage{
 

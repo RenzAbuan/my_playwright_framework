@@ -1,5 +1,5 @@
+import { HomePage } from "@pages";
 import BasePage from "./BasePage";
-import HomePage from "./HomePage";
 
 export default class LoginPage extends BasePage{
     /*Locators*/

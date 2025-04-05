@@ -1,6 +1,5 @@
+import { CheckoutCompletePage, HomePage } from "@pages";
 import BasePage from "./BasePage";
-import CheckoutCompletePage from "./CheckoutCompletePage";
-import HomePage from "./HomePage";
 
 export default class CheckoutOverviewPage extends BasePage{
 

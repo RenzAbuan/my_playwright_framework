@@ -1,6 +1,6 @@
 import BasePage from "./BasePage";
 import { Product } from "../../data/ecommerce/Products";
-import InformationPage from "./InformationPage";
+import { InformationPage } from "@pages";
 
 export default class CartPage extends BasePage{
 
@@ -54,4 +54,4 @@ export default class CartPage extends BasePage{
     async isItemInCart(itemName: string): Promise<boolean>{
         return (await this.page.locator(this.CART_LIST, {hasText: itemName}).all()).length > 0
     }
-}
+};

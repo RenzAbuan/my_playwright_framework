@@ -1,10 +1,9 @@
 // @ts-check
-import LoginPage from '../../model/pages/ecommerce/LoginPage'
 import { SortCategory } from '../../model/enums/ecommerce/SortCategory'
 import { arraysOfObjectsAreEqual } from '../../support/helper/Helper'
 import { Customer } from '../../model/data/ecommerce/Customer'
-import CartPage from '../../model/pages/ecommerce/CartPage'
-import { expect, test } from 'BaseTest'
+import { test, expect } from 'tests/BaseTest'
+import { LoginPage, CartPage } from '@pages'
 
 test('Successful Login & Logout', async ({ open }) => {
   
@@ -14,9 +13,8 @@ test('Successful Login & Logout', async ({ open }) => {
   // Validate if logged in
   expect(await homePage.getPageTitle()).toBe('Products')
   
-  await homePage.openMenu()
+  const loginPage = await homePage.openMenu()
     .then(_ => _.clickLogoutMenu())
-  const loginPage = await open(LoginPage)
 
   // Validate if logged out
   expect(await loginPage.isLoginFormVisible()).toBe(true)
@@ -62,10 +60,8 @@ test('Items can be added to cart upon viewing/selecting', async ({ open }) => {
   // Verify if product details from the list in homepage matches with the product view
   expect(await itemPage.getProduct()).toEqual(product)
 
-  await itemPage.clickAddToCart()
+  const cartPage =  await itemPage.clickAddToCart()
     .then(_ => _.clickShoppingCart())
-
-  const cartPage = await open(CartPage)
 
   // Verify if products were added to cart
   expect(await cartPage.getProductsInCart()).toContainEqual(product)
@@ -81,10 +77,8 @@ test('Items added are successfully removed from Cart', async ({ open }) => {
   for(const item of items)
     await homePage.clickAddToCart(item)
 
-  await homePage.clickShoppingCart()
-
-  const cartPage = await open(CartPage)
-  await cartPage.removeItem(items[0])
+  const cartPage = await homePage.clickShoppingCart()
+    .then(_ => _.removeItem(items[0]))
 
   // Verify if item is removed from cart
   expect(await cartPage.isItemInCart(items[0])).toBe(false)
@@ -104,10 +98,8 @@ test('Item/s has been added to Cart with correct names, descriptions & prices', 
 
   const productsAddedToCart = await homePage.getProductsAddedToCart()
 
-  await homePage.clickShoppingCart()
-
-  const cartPage = await open(CartPage)
-  const productsInCart = await cartPage.getProductsInCart()
+  const productsInCart = await homePage.clickShoppingCart()
+    .then(_ => _.getProductsInCart())
   
   // Verify product details of the products added to cart are correct
   expect(await arraysOfObjectsAreEqual(productsAddedToCart, productsInCart)).toBe(true)
@@ -128,9 +120,7 @@ test('Item price total in checkout page is correct', async ({ open }) => {
   for(const item of items)
     await homePage.clickAddToCart(item)
 
-  await homePage.clickShoppingCart()
-
-  const checkoutOverviewPage = await open(CartPage)
+  const checkoutOverviewPage = await homePage.clickShoppingCart()
     .then(_ => _.clickCheckout())
     .then(_ => _.setCustomerDetails(user))
     .then(_ => _.clickContinue())
@@ -156,8 +146,8 @@ test('Customer Information fields should be mandatory', async ({ open }) => {
 
   await homePage.clickShoppingCart()
 
-  const informationPage = await open(CartPage)
-  .then(_ => _.clickCheckout())
+  const informationPage = await homePage.clickShoppingCart()
+    .then(_ => _.clickCheckout())
 
   await informationPage.clickContinue()
   expect(await informationPage.getErrorMessage()).toBe('Error: First Name is required')
@@ -190,13 +180,11 @@ test('User should be able to cancel checkout but the items should still be selec
     await homePage.clickAddToCart(item)
 
   const productsAddedToCart = await homePage.getProductsAddedToCart()
-
-  await homePage.clickShoppingCart()
-  const cartPage = await open(CartPage)
+  
+  const cartPage = await homePage.clickShoppingCart()
   const productsInCart = await cartPage.getProductsInCart()
 
-  const pageTitle = await open(CartPage)
-    .then(_ => _.clickCheckout())
+  const pageTitle = await cartPage.clickCheckout()
     .then(_ => _.setCustomerDetails(user))
     .then(_ => _.clickContinue())
     .then(_ => _.clickCancel())
@@ -223,9 +211,7 @@ test('Item/s checkout is successful', async ({ open }) => {
   for(const item of items)
     await homePage.clickAddToCart(item)
 
-  await homePage.clickShoppingCart()
-
-  const checkoutCompletePage = await open(CartPage)
+  const checkoutCompletePage = await homePage.clickShoppingCart()
   .then(_ => _.clickCheckout())
   .then(_ => _.setCustomerDetails(user))
   .then(_ => _.clickContinue())

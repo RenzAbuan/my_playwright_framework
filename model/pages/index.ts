@@ -4,3 +4,4 @@ export { default as InformationPage } from './ecommerce/InformationPage';
 export { default as CheckoutCompletePage } from './ecommerce/CheckoutCompletePage';
 export { default as CheckoutOverviewPage } from './ecommerce/CheckoutOverviewPage';
 export { default as CartPage } from './ecommerce/CartPage';
+export { default as ItemPage } from './ecommerce/ItemPage';

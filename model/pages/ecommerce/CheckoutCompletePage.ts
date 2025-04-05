@@ -1,6 +1,5 @@
+import { HomePage } from "@pages"
 import BasePage from "./BasePage"
-import HomePage from "./HomePage"
-
 export default class CheckoutCompletePage extends BasePage {
 
     /* Locators */

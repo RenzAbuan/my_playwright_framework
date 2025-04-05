@@ -2,8 +2,7 @@ import { Locator } from "playwright-core";
 import BasePage from "./BasePage";
 import { Product } from "../../data/ecommerce/Products";
 import { SortCategory } from "../../enums/ecommerce/SortCategory";
-import CartPage from "./CartPage";
-import ItemPage from "./ItemPage";
+import { ItemPage } from "@pages";
 
 export default class HomePage extends BasePage{
 

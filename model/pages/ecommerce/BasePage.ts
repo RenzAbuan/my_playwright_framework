@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test"
-
+import { CartPage, HomePage, LoginPage } from '@pages'
 export default abstract class BasePage {
     protected page: Page
 
@@ -24,18 +24,18 @@ export default abstract class BasePage {
         return this
     }
 
-    async clickAllItemsMenu():Promise<BasePage>{
+    async clickAllItemsMenu():Promise<HomePage>{
         await this.page.locator(this.ALL_ITEMS_MENU).click()
-        return this
+        return await new HomePage(this.page).init()
     }
 
     async clickAboutMenu(){
         await this.page.locator(this.ABOUT_MENU).click()
     }
 
-    async clickLogoutMenu():Promise<BasePage>{
+    async clickLogoutMenu():Promise<LoginPage>{
         await this.page.locator(this.LOGOUT_MENU).click()
-        return this
+        return await new LoginPage(this.page).init()
     }
 
     async clickResetAppStateMenu():Promise<BasePage>{
@@ -43,8 +43,8 @@ export default abstract class BasePage {
         return this
     }
 
-    async clickShoppingCart():Promise<BasePage>{
+    async clickShoppingCart():Promise<CartPage>{
         await this.page.locator(this.SHOPPING_CART).click()
-        return this
+        return await new CartPage(this.page).init()
     }
 }
